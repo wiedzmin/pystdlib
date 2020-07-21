@@ -28,6 +28,17 @@ def read_entry_raw(path):
     return pass_entry_task.stdout.read().decode().strip().split("\n")
 
 
+def annotate_entry(entry):
+    result = {}
+    result["password"] = entry[0]
+    for line in entry[1:]:
+        tokens = line.split(":")
+        if len(tokens) < 2:
+            continue
+        result[tokens[0].strip()] = tokens[1].strip()
+    return result
+
+
 def extract_entry_name(path):
     return os.path.split(path)[-1]
 
