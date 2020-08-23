@@ -59,7 +59,3 @@ def tmuxp_collect_sessions(sessions_root=f'{os.getenv("HOME")}/tmuxp'):
                 configs.append(os.path.splitext(file)[0])
 
     return configs
-
-
-def tmux_cmd(cmd, oneshot=False):
-    shell_cmd(cmd, oneshot=oneshot, exc=LibTmuxException)
