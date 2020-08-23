@@ -1,9 +1,10 @@
 import subprocess
 
 from pystdlib import shell_cmd
+from pystdlib.shell import tmux_create_window, term_create_window
 
 
-def sctl_list_units(system=True, user=True):
+def list_services(system=True, user=True):
     units = []
     if user:
         result = shell_cmd("systemctl --user list-unit-files")
@@ -17,3 +18,34 @@ def sctl_list_units(system=True, user=True):
                       if unit.split()[0].endswith("service")])
 
     return units
+
+def unit_perform(unit, op, user=False):
+    cmd = f"systemctl {'--user ' if user else ''}{op} {unit.split()[0]}"
+    return shell_cmd(cmd)
+
+
+def unit_show(unit, op, user=False,
+              shell=None, # virtual terminal command in form like `alacritty -e`
+              tmux_session=None # tmux session name, will not be created it does not exist
+              ):
+    if op not in ["status", "journal", "show"]:
+        raise ValueError("[unit_show] invalid operation: {op}")
+
+    cmd = None
+    if op in ["status", "show"]:
+        cmd = f"systemctl {'--user ' if user else ''}{op} {unit.split()[0]}; read"
+    elif op == "journal":
+        cmd = f"journalctl {'--user ' if user else ''}-u {unit.split()[0]}; read"
+
+    title = f"{op} :: {unit}"
+    if shell:
+        if tmux_session:
+            tmux_create_window(f"sh -c '{cmd}'",
+                               session_name=tmux_session,
+                               window_title=title,
+                               create_if_not=False,
+                               attach=True)
+        else:
+            term_create_window(f"sh -c '{cmd}'", term_cmd=shell)
+    else:
+        show_text_dialog(cmd=cmd, title=title)
