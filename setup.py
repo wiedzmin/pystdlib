@@ -11,7 +11,7 @@ setup(name             = "pystdlib",
           "pystdlib",
           "pystdlib.passutils",
           "pystdlib.systemd",
-          "pystdlib.tmux",
+          "pystdlib.shell",
           "pystdlib.uishim",
           "pystdlib.xlib"
       ],
