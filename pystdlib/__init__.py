@@ -1,7 +1,7 @@
 import subprocess
 
 
-def shell_cmd(cmd, oneshot=False, exc=subprocess.CalledProcessError):
+def shell_cmd(cmd, oneshot=False, exc=subprocess.CalledProcessError, split_output=None):
     result = None
     if oneshot:
         os.system(cmd)
@@ -11,4 +11,7 @@ def shell_cmd(cmd, oneshot=False, exc=subprocess.CalledProcessError):
     if ret != 0:
         raise exc()
 
-    return task.stdout.read().decode().strip()
+    contents = task.stdout.read().decode().strip()
+    if split_output:
+        contents = contents.split(split_output)
+    return contents
