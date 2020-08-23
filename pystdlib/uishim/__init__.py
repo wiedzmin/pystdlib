@@ -44,7 +44,7 @@ def get_selection(seq, prompt, lines=5, case_insensitive=True, font=None):
         return fzf.prompt(seq, '--cycle')[0]
 
 
-def show_text_dialog(text=None, cmd=None, title=None):
+def show_text_dialog(text=None, cmd=None, title=None, path=None, keep=False):
     if not text and not cmd:
         raise ValueError("[show_text_dialog] nothing to display")
 
@@ -56,7 +56,12 @@ def show_text_dialog(text=None, cmd=None, title=None):
     elif text:
         output = text
 
-    with open("/tmp/dialog_text", "w") as f:
-        f.write(output)
-    shell_cmd("yad --filename /tmp/iface_traits {'--title {title} ' if title else ''}--text-info")
-    os.remove("/tmp/dialog_text")
+    dump_path = path if path else "/tmp/dialog_text"
+    with open(dump_path, "w") as f:
+        if type(output) is list:
+            f.writelines(output)
+        else:
+            f.write(output)
+    shell_cmd("yad --filename {dump_path} {'--title {title} ' if title else ''}--text-info")
+    if not keep:
+        os.remove(dump_path)
