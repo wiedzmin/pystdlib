@@ -1,12 +1,12 @@
 import subprocess
 
 
-def shell_cmd(cmd, oneshot=False, exc=subprocess.CalledProcessError, split_output=None):
+def shell_cmd(cmd, oneshot=False, env=None, exc=subprocess.CalledProcessError, split_output=None):
     result = None
     if oneshot:
         os.system(cmd)
         return ""
-    task = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
+    task = subprocess.Popen(cmd, env=env, shell=True, stdout=subprocess.PIPE)
     ret = task.wait()
     if ret != 0:
         raise exc()
