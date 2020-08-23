@@ -6,6 +6,7 @@ import notify2
 from notify2 import URGENCY_NORMAL, URGENCY_CRITICAL
 from pyfzf.pyfzf import FzfPrompt
 
+from pystdlib import shell_cmd
 
 notify2.init(os.path.basename(__file__))
 is_interactive = sys.stdin.isatty()
@@ -41,3 +42,21 @@ def get_selection(seq, prompt, lines=5, case_insensitive=True, font=None):
     else:
         fzf = FzfPrompt()
         return fzf.prompt(seq, '--cycle')[0]
+
+
+def show_text_dialog(text=None, cmd=None, title=None):
+    if not text and not cmd:
+        raise ValueError("[show_text_dialog] nothing to display")
+
+    output = None
+    if cmd:
+        output = shell_cmd(cmd)
+        if not output:
+            raise ValueError("[show_text_dialog] '{cmd}' returned nothin")
+    elif text:
+        output = text
+
+    with open("/tmp/dialog_text", "w") as f:
+        f.write(output)
+    shell_cmd("yad --filename /tmp/iface_traits {'--title {title} ' if title else ''}--text-info")
+    os.remove("/tmp/dialog_text")
