@@ -45,3 +45,16 @@ def tmuxp_collect_sessions(sessions_root=f'{os.getenv("HOME")}/tmuxp'):
                 configs.append(os.path.splitext(file)[0])
 
     return configs
+
+
+def tmux_cmd(cmd, oneshot=False):
+    result = None
+    if oneshot:
+        os.system(cmd)
+        return ""
+    tmux_cmd_task = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
+    ret = tmux_cmd_task.wait()
+    if ret != 0:
+        raise LibTmuxException
+
+    return tmux_cmd_task.stdout.read().decode().strip()
