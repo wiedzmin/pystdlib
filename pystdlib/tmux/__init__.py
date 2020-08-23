@@ -4,6 +4,8 @@ import subprocess
 from libtmux import Server
 from libtmux.exc import LibTmuxException
 
+from pystdlib import shell_cmd
+
 
 tmux_server = Server()
 
@@ -48,13 +50,4 @@ def tmuxp_collect_sessions(sessions_root=f'{os.getenv("HOME")}/tmuxp'):
 
 
 def tmux_cmd(cmd, oneshot=False):
-    result = None
-    if oneshot:
-        os.system(cmd)
-        return ""
-    tmux_cmd_task = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
-    ret = tmux_cmd_task.wait()
-    if ret != 0:
-        raise LibTmuxException
-
-    return tmux_cmd_task.stdout.read().decode().strip()
+    shell_cmd(cmd, oneshot=oneshot, exc=LibTmuxException)
