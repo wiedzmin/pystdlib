@@ -53,7 +53,7 @@ def tmuxp_load_session(name, attach=True, sessions_root=f'{os.getenv("HOME")}/tm
 
 def tmuxp_collect_sessions(sessions_root=f'{os.getenv("HOME")}/tmuxp'):
     configs = []
-    for root, dirs, files in os.walk(TMUXP_SESSIONS_PATH):
+    for root, dirs, files in os.walk(sessions_root):
         for file in files:
             if file.endswith(".yml"): # TODO: decouple from file format
                 configs.append(os.path.splitext(file)[0])
