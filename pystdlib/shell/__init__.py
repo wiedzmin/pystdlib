@@ -42,7 +42,7 @@ def tmux_create_window(cmd, session_name, window_title, create_if_not=True, atta
     return window
 
 
-def tmuxp_load_session(name, attach=True, sessions_root=f'{os.getenv("HOME")}/tmuxp'):
+def tmuxp_load_session(name, attach=True, sessions_root=f'{os.getenv("HOME")}/.tmuxp'):
     load_session_task = subprocess.Popen(f"tmuxp load -y {'-d ' if not attach else ''}{sessions_root}/{name}.yml",
                                          # TODO: decouple from file format
                                          shell=True, stdout=subprocess.PIPE)
@@ -51,7 +51,7 @@ def tmuxp_load_session(name, attach=True, sessions_root=f'{os.getenv("HOME")}/tm
         raise LibTmuxException
 
 
-def tmuxp_collect_sessions(sessions_root=f'{os.getenv("HOME")}/tmuxp'):
+def tmuxp_collect_sessions(sessions_root=f'{os.getenv("HOME")}/.tmuxp'):
     configs = []
     for root, dirs, files in os.walk(sessions_root):
         for file in files:
