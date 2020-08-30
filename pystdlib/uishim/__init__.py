@@ -13,7 +13,7 @@ is_interactive = sys.stdin.isatty()
 in_xsession = os.environ.get("DISPLAY")
 
 
-def notify(msg, header, urgency=URGENCY_NORMAL, timeout=3000):
+def notify(header, msg, urgency=URGENCY_NORMAL, timeout=3000):
     n = notify2.Notification(header, msg)
     n.set_urgency(urgency)
     n.set_timeout(timeout)
