@@ -8,6 +8,11 @@ from pyfzf.pyfzf import FzfPrompt
 
 from pystdlib import shell_cmd
 
+
+URGENCY_NORMAL = notify2.URGENCY_NORMAL
+URGENCY_CRITICAL = notify2.URGENCY_CRITICAL
+
+
 notify2.init(os.path.basename(__file__))
 is_interactive = sys.stdin.isatty()
 in_xsession = os.environ.get("DISPLAY")
