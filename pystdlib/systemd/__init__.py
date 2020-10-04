@@ -4,18 +4,18 @@ from pystdlib import shell_cmd
 from pystdlib.shell import tmux_create_window, term_create_window
 
 
-def list_services(system=True, user=True):
+def list_units(system=True, user=True):
     units = []
     if user:
         result = shell_cmd("systemctl --user list-unit-files")
-        units.extend([f"{unit.split()[0].split('.')[0]} [user]"
+        units.extend([f"{unit.split()[0]} [user]"
                       for unit in result.split("\n")[1:-3]
-                      if unit.split()[0].endswith("service")])
+                      if unit.split()[0].endswith(("service", "timer"))])
     if system:
         result = shell_cmd("systemctl list-unit-files")
-        units.extend([f"{unit.split()[0].split('.')[0]} [system]"
+        units.extend([f"{unit.split()[0]} [system]"
                       for unit in result.split("\n")[1:-3]
-                      if unit.split()[0].endswith("service")])
+                      if unit.split()[0].endswith(("service", "timer"))])
 
     return units
 
