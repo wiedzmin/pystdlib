@@ -29,16 +29,12 @@ def tmux_create_window(cmd, session_name, window_title, create_if_not=True, atta
         if not session and create_if_not:
             tmuxp_load_session(session_name, attach=attach)
             session = tmux_server.find_where({ "session_name": session_name })
-        else:
-            return None
-
         if attach:
             session.switch_client()
         window = session.new_window(attach=attach, window_name=window_title,
                                     window_shell=cmd, start_directory=start_directory)
     except LibTmuxException:
         return None
-
     return window
 
 
