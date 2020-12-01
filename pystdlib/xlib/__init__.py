@@ -1,3 +1,5 @@
+import os
+
 import Xlib.protocol.event
 from Xlib import X, display, error, Xatom, Xutil
 
@@ -28,3 +30,9 @@ def switch_desktop(index):
 def switch_named_desktop(name):
     index = prepare_desktops_map()[name] # TODO: add more safety harness
     switch_desktop(int(index))
+
+
+def is_idle_enough(xprintidle_binary, idle_time_treshold=3600):
+    idle_time = shell_cmd(xprintidle_binary, env={"DISPLAY": os.getenv("DISPLAY"),
+                                                  "XAUTHORITY": os.getenv("XAUTHORITY")})
+    return int(idle_time) >= idle_time_treshold * 1000
