@@ -9,12 +9,13 @@ setup(name             = "pystdlib",
       description      = "Standard library for workplace python scripts",
       packages         = [
           "pystdlib",
+          "pystdlib.git",
           "pystdlib.passutils",
-          "pystdlib.systemd",
           "pystdlib.shell",
+          "pystdlib.systemd",
           "pystdlib.uishim",
           "pystdlib.xlib"
       ],
       license          = "GPL",
-      install_requires = ["python-xlib", "dmenu", "pyfzf", "notify2"]
+      install_requires = ["python-xlib", "pygit2", "dmenu", "pyfzf", "notify2"]
 )
