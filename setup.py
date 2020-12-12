@@ -9,6 +9,7 @@ setup(name             = "pystdlib",
       description      = "Standard library for workplace python scripts",
       packages         = [
           "pystdlib",
+          "pystdlib.browser",
           "pystdlib.git",
           "pystdlib.passutils",
           "pystdlib.shell",
