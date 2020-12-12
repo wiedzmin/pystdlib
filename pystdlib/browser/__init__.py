@@ -33,7 +33,7 @@ def collect_session_urls(path, name):
     return urls, len(urls)
 
 
-def init_argparser():
+def init_mgmt_argparser(name_template):
     parser = argparse.ArgumentParser(description="Manage stored browser sessions.")
     parser.add_argument("--path", "-p", dest="sessions_path",
                         help="Base path to operate under")
@@ -42,7 +42,7 @@ def init_argparser():
     parser.add_argument("--history-length", "-l", dest="sessions_history_length",
                         default=10, help="Last saved sessions count to keep")
     parser.add_argument("--name-template", "-n", dest="sessions_name_template",
-                        default="firefox-session-auto", help="Filename template for auto-saved sessions")
+                        default=name_template, help="Filename template for auto-saved sessions")
     parser.add_argument("--save", dest="save_session", action="store_true",
                         default=False, help="Save current session")
     parser.add_argument("--open", dest="open_session", action="store_true",
