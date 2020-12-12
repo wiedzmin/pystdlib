@@ -92,3 +92,21 @@ def qutebrowser_fix_session(session_dict):
                 fixed_history[-1].update(QB_CURRENT_TAB_DICT_PATCH)
             tab["history"] = fixed_history
     return session_dict
+
+
+def qutebrowser_get_session_entries_org(session_dict):
+    all_entries = []
+    fixed_session = qutebrowser_fix_session(session_dict)
+    for window in fixed_session["windows"]:
+        window_tabs = window["tabs"]
+        window_entries = []
+        for tab in window_tabs:
+            tab_history = tab["history"]
+            for item in tab_history:
+                if "active" not in item:
+                    continue
+                if item["active"]:
+                    window_entries.append(f"[[{item['url']}][{item['title']}]]")
+                break
+        all_entries.append(window_entries)
+    return all_entries
