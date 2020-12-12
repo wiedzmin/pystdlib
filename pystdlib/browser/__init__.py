@@ -7,6 +7,16 @@ from pystdlib.uishim import get_selection
 from pystdlib import shell_cmd
 
 
+QB_CURRENT_TAB_DICT_PATCH = {
+    "scroll-pos": {
+        "x": 0,
+        "y": 0
+    },
+    "active": True,
+    "zoom": 1.0
+}
+
+
 def collect_sessions(path):
     return [f"{os.path.basename(session)}" for session in glob.glob(f"{path}/*.org")]
 
@@ -60,3 +70,25 @@ def rotate_sessions(path, name_template, keep_count):
     garbage_sessions = sorted([session for session in glob.glob(f"{path}/*{name_template}*")])[keep_count:]
     for s in garbage_sessions:
         os.remove(s)
+
+
+def qutebrowser_fix_session(session_dict):
+    for window in session_dict["windows"]:
+        window_tabs = window["tabs"]
+        for tab in window_tabs:
+            tab_history = tab["history"]
+            fixed_history = []
+            for item in tab_history:
+                fixed_item = item
+                if item["title"].startswith("Error loading"):
+                    continue
+                if item["url"].startswith("data:text/html"):
+                    continue
+                original_url = item.get("original-url")
+                if original_url and original_url.startswith("data:text/html"):
+                    del fixed_item["original-url"]
+                fixed_history.append(fixed_item)
+            if fixed_history:
+                fixed_history[-1].update(QB_CURRENT_TAB_DICT_PATCH)
+            tab["history"] = fixed_history
+    return session_dict
