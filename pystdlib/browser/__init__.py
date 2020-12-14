@@ -67,7 +67,8 @@ def open_urls_firefox(urls):
 
 
 def rotate_sessions(path, name_template, keep_count):
-    garbage_sessions = sorted([session for session in glob.glob(f"{path}/*{name_template}*")])[keep_count:]
+    garbage_sessions = sorted([session for session in glob.glob(f"{path}/{name_template}*")],
+                              reverse=True)[keep_count:]
     for s in garbage_sessions:
         os.remove(s)
 
