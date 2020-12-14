@@ -9,7 +9,7 @@ from pystdlib.passutils import read_entry_raw, extract_specific_line, \
 MAIN_BRANCHES = ["master", "main"]
 
 
-def is_git_repo(path=None):
+def is_repo(path=None):
     if not path:
         return False
     root = os.path.abspath(path) + "/.git"
