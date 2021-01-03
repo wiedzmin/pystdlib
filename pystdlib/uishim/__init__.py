@@ -57,16 +57,17 @@ def show_text_dialog(text=None, cmd=None, title=None, path=None, keep=False):
     if cmd:
         output = shell_cmd(cmd)
         if not output:
-            raise ValueError("[show_text_dialog] '{cmd}' returned nothin")
+            raise ValueError("[show_text_dialog] '{cmd}' returned nothing")
     elif text:
         output = text
 
     dump_path = path if path else "/tmp/dialog_text"
-    with open(dump_path, "w") as f:
-        if type(output) is list:
-            f.writelines(output)
-        else:
-            f.write(output)
-    shell_cmd("yad --filename {dump_path} {'--title {title} ' if title else ''}--text-info")
+    if not os.path.exists(dump_path):
+        with open(dump_path, "w") as f:
+            if type(output) is list:
+                f.write("\n".join(output))
+            else:
+                f.write(output)
+    shell_cmd(f"yad --filename {dump_path} {'--title {title} ' if title else ''}--text-info")
     if not keep:
         os.remove(dump_path)
