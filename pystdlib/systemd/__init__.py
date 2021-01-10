@@ -19,6 +19,7 @@ def list_units(system=True, user=True):
 
     return units
 
+
 def unit_perform(unit, op, user=False):
     cmd = f"systemctl {'--user ' if user else ''}{op} {unit.split()[0]}"
     return shell_cmd(cmd)
@@ -49,3 +50,18 @@ def unit_show(unit, op, user=False,
             term_create_window(f"sh -c '{cmd}'", term_cmd=shell)
     else:
         show_text_dialog(cmd=cmd, title=title)
+
+
+def is_systemd_service_active(name, user=False):
+    status_task = subprocess.Popen(f"systemctl {'--user ' if user else ''}status --no-page {name}.service", shell=True,
+                                   stdout=subprocess.PIPE)
+    result = status_task.wait()
+    print(result)
+    if result in [0, 3]:
+        lines = status_task.stdout.read().decode().split("\n")
+        print(lines)
+        if "running" in lines[2]:
+            return True
+        return False
+    else:
+        return False
