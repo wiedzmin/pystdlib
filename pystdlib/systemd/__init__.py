@@ -26,6 +26,7 @@ def unit_perform(unit, op, user=False):
 
 
 def unit_show(unit, op, user=False,
+              follow=False, # follow journal
               shell=None, # virtual terminal command in form like `alacritty -e`
               tmux_session=None # tmux session name, will not be created it does not exist
               ):
@@ -36,7 +37,7 @@ def unit_show(unit, op, user=False,
     if op in ["status", "show"]:
         cmd = f"systemctl {'--user ' if user else ''}{op} {unit.split()[0]}; read"
     elif op == "journal":
-        cmd = f"journalctl {'--user ' if user else ''}-u {unit.split()[0]}; read"
+        cmd = f"journalctl {'--user ' if user else ''}{'--follow ' if follow else ''}-u {unit.split()[0]}{'; read' if not follow else ''}"
 
     title = f"{op} :: {unit}"
     if shell:
