@@ -20,7 +20,8 @@ def term_create_window(cmd, term_cmd=None):
         shell_cmd(" ".join(term_cmd))
 
 
-def tmux_create_window(cmd, session_name, window_title, create_if_not=True, attach=True, start_directory=None):
+def tmux_create_window(cmd, session_name, window_title, create_if_not=True, attach=True, attach_window=True,
+                       start_directory=None):
     window = None
     try:
         session = tmux_server.find_where({ "session_name": session_name })
@@ -29,7 +30,7 @@ def tmux_create_window(cmd, session_name, window_title, create_if_not=True, atta
             session = tmux_server.find_where({ "session_name": session_name })
         if attach:
             session.switch_client()
-        window = session.new_window(attach=attach, window_name=window_title,
+        window = session.new_window(attach=attach_window, window_name=window_title,
                                     window_shell=cmd, start_directory=start_directory)
     except LibTmuxException:
         return None
