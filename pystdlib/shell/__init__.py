@@ -11,15 +11,13 @@ tmux_server = Server()
 
 
 def term_create_window(cmd, term_cmd=None):
-    cmd = []
     if type(term_cmd) not in [list, str]:
         raise ValueError(f"invalid `term_cmd` type: {type(term_cmd)}")
     if type(term_cmd) is str:
         term_cmd = term_cmd.split()
-
-    cmd.extend(term_cmd)
     if len(cmd) > 0:
-        shell_cmd(cmd)
+        term_cmd.extend(cmd.split(" "))
+        shell_cmd(" ".join(term_cmd))
 
 
 def tmux_create_window(cmd, session_name, window_title, create_if_not=True, attach=True, start_directory=None):
