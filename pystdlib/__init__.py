@@ -26,7 +26,11 @@ def shell_cmd(cmd, oneshot=False, env=None, shell=True,
 
     if not completed.stdout:
         return ""
-    contents = completed.stdout.decode().strip()
+    contents = None
+    if isinstance(completed.stdout, bytes):
+        contents = completed.stdout.decode().strip()
+    else:
+        contents = completed.stdout.strip()
     if split_output:
         contents = contents.split(split_output)
     return contents
