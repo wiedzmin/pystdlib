@@ -68,6 +68,7 @@ def show_text_dialog(text=None, cmd=None, title=None, path=None, keep=False):
                 f.write("\n".join(output))
             else:
                 f.write(output)
-    shell_cmd(f"yad --filename {dump_path} {'--title {title} ' if title else ''}--text-info")
+    shell_cmd(f"yad --filename {dump_path} {'--title {title} ' if title else ''}--text-info",
+              ignore_error_codes=[252])
     if not keep:
         os.remove(dump_path)
