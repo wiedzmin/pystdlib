@@ -5,6 +5,7 @@ import dmenu
 import notify2
 from notify2 import URGENCY_NORMAL, URGENCY_CRITICAL
 from pyfzf.pyfzf import FzfPrompt
+from rofi import Rofi
 
 from pystdlib import shell_cmd
 
@@ -16,6 +17,8 @@ URGENCY_CRITICAL = notify2.URGENCY_CRITICAL
 notify2.init(os.path.basename(__file__))
 is_interactive = sys.stdin.isatty()
 in_xsession = os.environ.get("DISPLAY")
+
+ro = Rofi()
 
 
 def notify(header, msg, urgency=URGENCY_NORMAL, timeout=3000):
@@ -47,6 +50,14 @@ def get_selection(seq, prompt, lines=5, case_insensitive=True, font=None):
     else:
         fzf = FzfPrompt()
         return fzf.prompt(seq, '--cycle')[0]
+
+
+def get_selection_rofi(seq, prompt):
+    seq = list(seq)
+    index, _ = ro.select(prompt, seq)
+    if index:
+        return seq[index[0]]
+    return None
 
 
 def show_text_dialog(text=None, cmd=None, title=None, path=None, keep=False):

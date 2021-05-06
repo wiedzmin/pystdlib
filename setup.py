@@ -18,5 +18,5 @@ setup(name             = "pystdlib",
           "pystdlib.xlib"
       ],
       license          = "GPL",
-      install_requires = ["python-xlib", "pygit2", "dmenu", "pyfzf", "notify2"]
+      install_requires = ["papis-python-rofi", "python-xlib", "pygit2", "dmenu", "pyfzf", "notify2"]
 )
