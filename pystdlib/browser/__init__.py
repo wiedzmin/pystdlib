@@ -1,7 +1,10 @@
 import argparse
+import datetime
 import glob
 import os
 import time
+
+from functools import partial
 
 from pystdlib.uishim import get_selection
 from pystdlib import shell_cmd
@@ -66,11 +69,22 @@ def open_urls_firefox(urls):
         shell_cmd(f"firefox --new-tab {urls_remainder}")
 
 
+def get_session_ts(path, name_template):
+    return datetime.datetime.strptime(os.path.splitext(os.path.basename(path))[0][len(name_template)+1:],
+                                      '%d-%m-%Y-%H-%M-%S')
+
+
 def rotate_sessions(path, name_template, keep_count):
-    garbage_sessions = sorted([session for session in glob.glob(f"{path}/{name_template}*")],
-                              reverse=True)[keep_count:]
-    for s in garbage_sessions:
-        os.remove(s)
+    get_session_ts_tmpl = partial(get_session_ts, name_template=name_template)
+    all_sessions = sorted([session for session in glob.glob(f"{path}/{name_template}*")],
+                          reverse=True, key=get_session_ts_tmpl)
+    if not len(all_sessions):
+        notify("f[{name_template}]", f"No saved sessions found for this name template, please check",
+               urgency=URGENCY_CRITICAL, timeout=5000)
+    else:
+        garbage_sessions = all_sessions[keep_count:]
+        for s in garbage_sessions:
+            os.remove(s)
 
 
 def qutebrowser_fix_session(session_dict):
