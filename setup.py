@@ -3,7 +3,7 @@
 from setuptools import setup
 
 setup(name             = "pystdlib",
-      version          = "unstable",
+      version          = "0.9", # neither unstable, nor 1.0-compliant
       author           = "Alex Ermolov",
       url              = "https://github.com/wiedzmin/pystdlib",
       description      = "Standard library for workplace python scripts",
