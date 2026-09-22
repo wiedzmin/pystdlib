@@ -37,7 +37,7 @@
     package = pkgs.python311;
   };
 
-  pre-commit.hooks = {
+  git-hooks.hooks = {
     shfmt.enable = true;
     typos.enable = true;
   };

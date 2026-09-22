@@ -1,7 +1,13 @@
+# yaml-language-server: $schema=https://devenv.sh/devenv.schema.json
 inputs:
+  git-hooks:
+    url: github:cachix/git-hooks.nix
+    inputs:
+      nixpkgs:
+        follows: nixpkgs
   nixpkgs:
     url: github:NixOS/nixpkgs/nixpkgs-unstable
   nixpkgs-future:
-    url: github:NixOS/nixpkgs/0ad13a6833440b8e238947e47bea7f11071dc2b2 # FIXME: investigate deduplication with flake.nix
+    url: github:NixOS/nixpkgs/ab0f3607a6c7486ea22229b92ed2d355f1482ee0
   nur:
     url: github:wiedzmin/NUR/master
